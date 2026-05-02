@@ -80,28 +80,36 @@ const fallbackBackUrl = "/projects";
     <h1 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>
     <p class="mt-4 max-w-3xl text-lg text-foreground/85">{description}</p>
 
-    {pubDatetime && (
-      <Datetime
-        class="mt-4"
-        pubDatetime={pubDatetime}
-        modDatetime={modDatetime}
-        size="lg"
-      />
-    )}
+    {
+      pubDatetime && (
+        <Datetime
+          class="mt-4"
+          pubDatetime={pubDatetime}
+          modDatetime={modDatetime}
+          size="lg"
+        />
+      )
+    }
 
-    {chips.length > 0 && (
-      <div class="mt-5 flex flex-wrap gap-2">
-        {chips.map(label => <Chip label={String(label)} />)}
-      </div>
-    )}
+    {
+      chips.length > 0 && (
+        <div class="mt-5 flex flex-wrap gap-2">
+          {chips.map(label => (
+            <Chip label={String(label)} />
+          ))}
+        </div>
+      )
+    }
 
-    {actions.length > 0 && (
-      <div class="mt-6 flex flex-wrap gap-3">
-        {actions.map(action => (
-          <LinkButton href={action.href}>{action.label}</LinkButton>
-        ))}
-      </div>
-    )}
+    {
+      actions.length > 0 && (
+        <div class="mt-6 flex flex-wrap gap-3">
+          {actions.map(action => (
+            <LinkButton href={action.href}>{action.label}</LinkButton>
+          ))}
+        </div>
+      )
+    }
 
     <article class="app-prose mt-10 max-w-app">
       <Content />

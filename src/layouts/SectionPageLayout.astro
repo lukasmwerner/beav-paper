@@ -56,10 +56,16 @@ const projectItems = projects.map(project => ({
 }));
 
 const pageTitle = frontmatter.pageTitle ?? frontmatter.title;
-const pageDescription = frontmatter.description ?? frontmatter.pageDesc ?? SITE.desc;
+const pageDescription =
+  frontmatter.description ?? frontmatter.pageDesc ?? SITE.desc;
 ---
 
-<Layout title={frontmatter.section === "home" ? SITE.title : `${pageTitle} | ${SITE.title}`} description={pageDescription}>
+<Layout
+  title={frontmatter.section === "home"
+    ? SITE.title
+    : `${pageTitle} | ${SITE.title}`}
+  description={pageDescription}
+>
   <Header />
 
   {

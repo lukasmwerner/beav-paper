@@ -44,7 +44,9 @@ const { items, emptyMessage = "Nothing here yet." } = Astro.props;
 
           {item.badges && item.badges.length > 0 && (
             <div class="mt-4 flex flex-wrap gap-2">
-              {item.badges.map(label => <Chip {label} />)}
+              {item.badges.map(label => (
+                <Chip {label} />
+              ))}
             </div>
           )}
 
