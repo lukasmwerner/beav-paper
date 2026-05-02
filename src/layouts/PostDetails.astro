@@ -67,6 +67,8 @@ const layoutProps = {
   scrollSmooth: true,
 };
 
+const fallbackBackUrl = "/posts";
+
 /* ========== Prev/Next Posts ========== */
 
 const allPosts = posts.map(({ data: { title }, id, filePath }) => ({
@@ -87,6 +89,7 @@ const nextPost =
   <BackButton />
   <main
     id="main-content"
+    data-back-url={fallbackBackUrl}
     class:list={["app-layout pb-12", { "mt-8": !SITE.showBackButton }]}
     data-pagefind-body
   >
@@ -277,6 +280,27 @@ const nextPost =
     }
   }
   attachCopyButtons();
+
+  function syncBackUrl() {
+    const mainContent = document.querySelector("#main-content");
+    const fallbackBackUrl = mainContent?.getAttribute("data-back-url") || "/";
+    const currentBackUrl = sessionStorage.getItem("backUrl");
+    const allowedPrefixes = ["/posts", "/tags", "/search", "/"];
+
+    const isAllowed =
+      !!currentBackUrl &&
+      allowedPrefixes.some(prefix =>
+        prefix === "/"
+          ? currentBackUrl === "/"
+          : currentBackUrl.startsWith(prefix)
+      );
+
+    if (!isAllowed) {
+      sessionStorage.setItem("backUrl", fallbackBackUrl);
+    }
+  }
+  syncBackUrl();
+  document.addEventListener("astro:page-load", syncBackUrl);
 
   /* Go to page start after page swap */
   document.addEventListener("astro:after-swap", () =>

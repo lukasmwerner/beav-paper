@@ -1,0 +1,29 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import ShowcaseEntry from "@/layouts/ShowcaseEntry.astro";
+import { PROJECT_PATH } from "@/content.config";
+import { getPath } from "@/utils/getPath";
+
+type Props = {
+  entry: CollectionEntry<"projects">;
+};
+
+export async function getStaticPaths() {
+  const entries = await getCollection("projects", ({ data }) => !data.draft);
+
+  return entries.map(entry => ({
+    params: {
+      slug: getPath(entry.id, entry.filePath, {
+        includeBase: false,
+        basePath: "/projects",
+        contentPath: PROJECT_PATH,
+      }),
+    },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+---
+
+<ShowcaseEntry entry={entry} sectionLabel="Project" />

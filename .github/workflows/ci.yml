@@ -1,27 +1,29 @@
-name: CI
+name: CI & Deploy
+
+on:
+  push:
+    branches: [main] # deploy on pushes to main
+  pull_request: # keep PR checks
+    types: [opened, edited, synchronize, reopened]
+  workflow_dispatch: # allow manual runs
 
 permissions:
   contents: read
+  pages: write # needed for Pages deploy
+  id-token: write
 
-on:
-  pull_request:
-    types:
-      - opened
-      - edited
-      - synchronize
-      - reopened
-  workflow_call:
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   build:
     name: Code standards & build
     runs-on: ubuntu-latest
-    timeout-minutes: 3
-
+    timeout-minutes: 10
     strategy:
       matrix:
         node-version: [20]
-
     steps:
       - name: "☁️ Checkout repository"
         uses: actions/checkout@v4
@@ -31,20 +33,39 @@ jobs:
         with:
           version: 10.11.1
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: "🟩 Use Node.js ${{ matrix.node-version }}"
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "pnpm"
+          cache: pnpm
 
       - name: "📦 Install dependencies"
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: "🔎 Lint code"
         run: pnpm run lint
 
-      - name: "📝 Checking code format"
+      - name: "📝 Check code format"
         run: pnpm run format:check
 
       - name: "🚀 Build the project"
         run: pnpm run build
+
+      # Only when pushing to main, upload the build output for Pages
+      - name: "⬆️ Upload Pages artifact"
+        if: github.event_name == 'push'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist # Astro outputs to dist/
+
+  deploy:
+    name: Deploy to GitHub Pages
+    if: github.event_name == 'push' # don't deploy for PRs
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

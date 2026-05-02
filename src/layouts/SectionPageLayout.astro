@@ -1,0 +1,102 @@
+---
+import type { MarkdownLayoutProps } from "astro";
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Main from "@/layouts/Main.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import HomeHero from "@/components/HomeHero.astro";
+import CollectionPreview from "@/components/CollectionPreview.astro";
+import EntryList from "@/components/EntryList.astro";
+import { PROJECT_PATH } from "@/content.config";
+import { SITE } from "@/config";
+import getSortedPosts from "@/utils/getSortedPosts";
+import getSortedCollection from "@/utils/getSortedCollection";
+import formatDate from "@/utils/formatDate";
+import { getPath } from "@/utils/getPath";
+
+type Frontmatter = {
+  title: string;
+  description?: string;
+  section: "home" | "posts" | "projects";
+  pageTitle?: string;
+  pageDesc?: string;
+};
+
+const { frontmatter } = Astro.props as MarkdownLayoutProps<Frontmatter>;
+
+const posts = getSortedPosts(await getCollection("blog"));
+const projects = getSortedCollection(await getCollection("projects"));
+
+const postItems = posts.map(post => ({
+  href: getPath(post.id, post.filePath),
+  title: post.data.title,
+  description: post.data.description,
+  eyebrow: formatDate(post.data.modDatetime ?? post.data.pubDatetime),
+  badges: post.data.tags.slice(0, 4),
+}));
+
+const projectItems = projects.map(project => ({
+  href: getPath(project.id, project.filePath, {
+    basePath: "/projects",
+    contentPath: PROJECT_PATH,
+  }),
+  title: project.data.title,
+  description: project.data.description,
+  eyebrow: project.data.status ?? formatDate(project.data.pubDatetime),
+  badges: [...project.data.tags, ...project.data.stack].slice(0, 5),
+  links: [
+    project.data.demoUrl
+      ? { href: project.data.demoUrl, label: "Live demo" }
+      : null,
+    project.data.repoUrl
+      ? { href: project.data.repoUrl, label: "Repository" }
+      : null,
+  ].filter((link): link is { href: string; label: string } => link !== null),
+}));
+
+const pageTitle = frontmatter.pageTitle ?? frontmatter.title;
+const pageDescription = frontmatter.description ?? frontmatter.pageDesc ?? SITE.desc;
+---
+
+<Layout title={frontmatter.section === "home" ? SITE.title : `${pageTitle} | ${SITE.title}`} description={pageDescription}>
+  <Header />
+
+  {
+    frontmatter.section === "home" ? (
+      <main id="main-content" class="app-layout pb-12">
+        <HomeHero />
+        <CollectionPreview
+          title="Projects"
+          description="A place for class projects, hackathon builds, personal experiments, and capstone work."
+          href="/projects/"
+          linkLabel="All projects"
+          items={projectItems.slice(0, 3)}
+        />
+        <CollectionPreview
+          title="Posts"
+          description="Use posts for course reflections, internship lessons, tutorials, and writing about what you learn."
+          href="/posts/"
+          linkLabel="All posts"
+          items={postItems.slice(0, 3)}
+        />
+      </main>
+    ) : frontmatter.section === "posts" ? (
+      <Main pageTitle={pageTitle} pageDesc={frontmatter.pageDesc}>
+        <EntryList
+          items={postItems}
+          emptyMessage="Add your first post in src/data/blog."
+        />
+      </Main>
+    ) : (
+      <Main pageTitle={pageTitle} pageDesc={frontmatter.pageDesc}>
+        <EntryList
+          items={projectItems}
+          emptyMessage="Add your first project in src/data/projects."
+        />
+      </Main>
+    )
+  }
+
+  <Footer />
+</Layout>

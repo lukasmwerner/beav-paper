@@ -3,35 +3,47 @@ layout: ../layouts/AboutLayout.astro
 title: "About"
 ---
 
-AstroPaper is a minimal, accessible and SEO-friendly blog theme built with [Astro](https://astro.build/) and [Tailwind CSS](https://tailwindcss.com/).
+Beav Paper is a starter site for Oregon State students who want a clean personal website without a lot of setup.
 
-![Astro Paper](public/astropaper-og.jpg)
+It is designed to work well for:
 
-AstroPaper provides a solid foundation for blogs, or even portfolios\_ with full markdown support, built-in dark mode, and a clean layout that works out-of-the-box.
+- personal portfolios
+- project writeups
+- technical blog posts
+- internship reflections
 
-The blog posts in this theme also serve as guides, docs or example articles\_ making AstroPaper a flexible starting point for your next content-driven site.
+## How this template is organized
 
-## Features
+The site is built around two markdown-first content areas:
 
-AstroPaper comes with a set of useful features that make content publishing easy and effective:
+- `src/data/projects` for portfolio projects
+- `src/data/blog` for posts
 
-- SEO-friendly
-- Fast performance
-- Light & dark mode
-- Highly customizable
-- Organizable blog posts
-- Responsive & accessible
-- Static search with [PageFind](https://pagefind.app/)
-- Automatic social image generation
+Each major page in the navigation is also content-friendly:
 
-and so much more.
+- Home
+- Posts
+- Projects
+- About
 
-## Show your support
+## A good way to customize it
 
-If you like [AstroPaper](https://github.com/satnaing/astro-paper), consider giving it a star ⭐️.
+Start by replacing the placeholder content with your own:
 
-Found a bug 🐛 or have an improvement ✨ in mind? Feel free to open an [issue](https://github.com/satnaing/astro-paper/issues), submit a [pull request](https://github.com/satnaing/astro-paper/pulls) or start a [discussion](https://github.com/satnaing/astro-paper/discussions).
+1. Update `src/config.ts` with your name, description, and site URL.
+2. Replace the social links in `src/constants.ts`.
+3. Add your projects in `src/data/projects`.
+4. Add blog posts in `src/data/blog`.
+5. Rewrite this page so it sounds like you.
 
-If you find this theme helpful, you can also [sponsor me on GitHub](https://github.com/sponsors/satnaing) or [buy me a coffee](https://buymeacoffee.com/satnaing) to show your support — every penny counts.
+## Suggested content ideas for OSU students
 
-Kyay zuu! 🙏🏼
+- class project writeups
+- study notes from CS courses
+- club or hackathon recaps
+- portfolio case studies
+- Corvallis recommendations
+
+## Community
+
+If you're an Oregon State CS student looking for community, check out [ACM@OSU](https://acmosu.org).

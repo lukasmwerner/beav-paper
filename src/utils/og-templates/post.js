@@ -99,7 +99,7 @@ export default async post => {
       type: "div",
       props: {
         style: {
-          background: "#fefbfb",
+          background: "#fff8f1",
           width: "100%",
           height: "100%",
           display: "flex",
@@ -114,8 +114,8 @@ export default async post => {
                 position: "absolute",
                 top: "-1px",
                 right: "-1px",
-                border: "4px solid #000",
-                background: "#ecebeb",
+                border: "4px solid #2b211b",
+                background: "#f1e3d3",
                 opacity: "0.9",
                 borderRadius: "4px",
                 display: "flex",
@@ -130,8 +130,8 @@ export default async post => {
             type: "div",
             props: {
               style: {
-                border: "4px solid #000",
-                background: "#fefbfb",
+                border: "4px solid #2b211b",
+                background: "#fff8f1",
                 borderRadius: "4px",
                 display: "flex",
                 justifyContent: "center",
@@ -159,6 +159,7 @@ export default async post => {
                           fontWeight: "bold",
                           maxHeight: "84%",
                           overflow: "hidden",
+                          color: "#2b211b",
                         },
                         children: post.data.title,
                       },
@@ -192,6 +193,7 @@ export default async post => {
                                     style: {
                                       overflow: "hidden",
                                       fontWeight: "bold",
+                                      color: "#d73f09",
                                     },
                                     children: post.data.author,
                                   },
@@ -202,7 +204,11 @@ export default async post => {
                           {
                             type: "span",
                             props: {
-                              style: { overflow: "hidden", fontWeight: "bold" },
+                              style: {
+                                overflow: "hidden",
+                                fontWeight: "bold",
+                                color: "#5a4638",
+                              },
                               children: SITE.title,
                             },
                           },

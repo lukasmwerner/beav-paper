@@ -1,0 +1,20 @@
+---
+import LinkButton from "./LinkButton.astro";
+---
+
+<section id="hero" class="border-b border-border py-10 sm:py-14">
+  <p class="text-sm font-semibold tracking-[0.2em] text-accent uppercase">
+    Oregon State student template
+  </p>
+  <h1 class="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
+    Build a warm, student-friendly site for your projects and posts.
+  </h1>
+  <p class="mt-4 max-w-2xl text-lg text-foreground/85">
+    Beav Paper gives Oregon State CS students a simple starting point for a
+    personal website, portfolio, and blog.
+  </p>
+  <div class="mt-6 flex flex-wrap gap-3">
+    <LinkButton href="/projects/">Browse projects</LinkButton>
+    <LinkButton href="/posts/">Read posts</LinkButton>
+  </div>
+</section>
